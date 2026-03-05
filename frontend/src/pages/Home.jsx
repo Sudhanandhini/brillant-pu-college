@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
-import banner1 from "../assets/banner.jpg";
-import banner2 from "../assets/banner3.jpg";
+import banner1 from "../assets/banner1-1.jpg";
+import banner2 from "../assets/banner1-1.jpg";
 
 import gall1 from "../assets/gall1.jpg";
 import gall2 from "../assets/gall7.jpg";
@@ -136,8 +136,34 @@ export default function Home() {
   const [current, setCurrent] = useState(0);
   const [animating, setAnimating] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(null);
+  const [showFormPopup, setShowFormPopup] = useState(true);
+  const [popup, setPopup] = useState({ name: "", email: "", phone: "", message: "" });
+  const [popupStatus, setPopupStatus] = useState(null); // null | "sending" | "success" | "error"
   const [enquiry, setEnquiry] = useState({ name: "", email: "", phone: "", message: "" });
   const [enquiryStatus, setEnquiryStatus] = useState(null); // null | "sending" | "success" | "error"
+
+  const handlePopupChange = (e) => setPopup({ ...popup, [e.target.name]: e.target.value });
+
+  const handlePopupSubmit = async (e) => {
+    e.preventDefault();
+    setPopupStatus("sending");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...popup, subject: "Enquiry from Popup Form" }),
+      });
+      if (res.ok) {
+        setPopupStatus("success");
+        setPopup({ name: "", email: "", phone: "", message: "" });
+        setTimeout(() => setShowFormPopup(false), 1500);
+      } else {
+        setPopupStatus("error");
+      }
+    } catch {
+      setPopupStatus("error");
+    }
+  };
 
   const handleEnquiryChange = (e) => setEnquiry({ ...enquiry, [e.target.name]: e.target.value });
 
@@ -178,6 +204,60 @@ export default function Home() {
 
   return (
     <div>
+      {/* Enquiry Form Popup */}
+      {showFormPopup && (
+        <div
+          className="fixed inset-0 z-[1000] flex items-center justify-center p-4"
+          style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}
+          onClick={() => setShowFormPopup(false)}
+        >
+          <div
+            style={{ background: '#fff', width: '100%', maxWidth: '430px', position: 'relative', padding: '28px 28px 44px', fontFamily: 'Arial,sans-serif' }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <form onSubmit={handlePopupSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              <div>
+                <label style={{ display: 'block', fontSize: '13px', marginBottom: '5px', color: '#333' }}>Your Name (required)</label>
+                <input name="name" value={popup.name} onChange={handlePopupChange} required
+                  style={{ width: '100%', border: '1px solid #ccc', padding: '7px 10px', fontSize: '13px', outline: 'none', boxSizing: 'border-box' }} />
+              </div>
+              <div>
+                <label style={{ display: 'block', fontSize: '13px', marginBottom: '5px', color: '#333' }}>Your Email (required)</label>
+                <input name="email" type="email" value={popup.email} onChange={handlePopupChange} required
+                  style={{ width: '100%', border: '1px solid #ccc', padding: '7px 10px', fontSize: '13px', outline: 'none', boxSizing: 'border-box' }} />
+              </div>
+              <div>
+                <label style={{ display: 'block', fontSize: '13px', marginBottom: '5px', color: '#333' }}>Telephone No:</label>
+                <input name="phone" value={popup.phone} onChange={handlePopupChange} placeholder="Telephone number"
+                  style={{ width: '65%', border: '1px solid #ccc', padding: '7px 10px', fontSize: '13px', outline: 'none', boxSizing: 'border-box' }} />
+              </div>
+              <div>
+                <label style={{ display: 'block', fontSize: '13px', marginBottom: '5px', color: '#333' }}>Your Message</label>
+                <textarea name="message" value={popup.message} onChange={handlePopupChange}
+                  style={{ width: '100%', border: '1px solid #ccc', padding: '7px 10px', fontSize: '13px', outline: 'none', resize: 'none', height: '160px', boxSizing: 'border-box' }} />
+              </div>
+              {popupStatus === 'success' && <p style={{ color: 'green', fontSize: '12px', margin: 0 }}>Message sent! Thank you.</p>}
+              {popupStatus === 'error' && <p style={{ color: 'red', fontSize: '12px', margin: 0 }}>Failed to send. Please try again.</p>}
+              <div>
+                <button type="submit" disabled={popupStatus === 'sending'}
+                  style={{ background: '#1a9dbd', color: '#fff', border: 'none', padding: '8px 20px', fontSize: '13px', cursor: 'pointer', opacity: popupStatus === 'sending' ? 0.6 : 1 }}>
+                  {popupStatus === 'sending' ? 'Sending...' : 'Send'}
+                </button>
+              </div>
+            </form>
+            <button
+              onClick={() => setShowFormPopup(false)}
+              style={{
+                position: 'absolute', bottom: '10px', right: '10px',
+                background: '#888', color: '#fff', border: 'none',
+                width: '26px', height: '26px', cursor: 'pointer',
+                fontSize: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center'
+              }}
+            >x</button>
+          </div>
+        </div>
+      )}
+
       {/* Lightbox */}
       {lightboxIndex !== null && (
         <Lightbox
@@ -188,7 +268,7 @@ export default function Home() {
       )}
 
       {/* ── Hero Slider ── */}
-      <div className="relative h-[380px] md:h-[460px] overflow-hidden select-none">
+      <div className="relative h-[380px] md:h-[460px] lg:h-[650px] overflow-hidden select-none">
         {heroSlides.map((slide, i) => (
           <div key={i} className="absolute inset-0 transition-opacity duration-700"
             style={{ opacity: i === current ? 1 : 0, zIndex: i === current ? 1 : 0 }}>
