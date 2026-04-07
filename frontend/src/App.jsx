@@ -1,4 +1,11 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { useEffect } from "react";
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => { window.scrollTo(0, 0); }, [pathname]);
+  return null;
+}
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
@@ -9,6 +16,7 @@ import PCMCs from "./pages/PCMCs";
 import Results from "./pages/Results";
 import ResultPDF from "./pages/Resultpdf";
 import Events from "./pages/Events";
+import News from "./pages/News";
 import Contact from "./pages/Contact";
 import FacilitiesLayout from "./pages/facilities/FacilitiesLayout";
 import Library from "./pages/facilities/Library";
@@ -22,6 +30,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <div className="min-h-screen flex flex-col">
+        <ScrollToTop />
         <Header />
         <main className="flex-1">
           <Routes>
@@ -36,6 +45,7 @@ export default function App() {
             <Route path="/results" element={<Results />} />
             <Route path="/results/:year" element={<ResultPDF />} />
             <Route path="/events" element={<Events />} />
+            <Route path="/news" element={<News />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/facilities" element={<FacilitiesLayout />}>
               <Route index element={<Navigate to="/facilities/library" replace />} /> 

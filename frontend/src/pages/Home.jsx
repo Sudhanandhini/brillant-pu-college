@@ -1,7 +1,8 @@
 import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
-import banner1 from "../assets/banner1-1.jpg";
-import banner2 from "../assets/banner1-1.jpg";
+import banner1 from "../assets/pu-banner1-1.jpg";
+import banner2 from "../assets/pu-banner2-1.jpg";
+import banner3 from "../assets/pu-banner3-1.jpg";
 
 import gall1 from "../assets/gall1.jpg";
 import gall2 from "../assets/gall7.jpg";
@@ -24,13 +25,13 @@ import col from "../assets/gall13.jpg"
 
 
 const heroSlides = [
-  { img: banner1, title: "ADMISSION OPEN", subtitle: "2024-2025" },
+  { img: banner1, title: "ADMISSION OPEN", subtitle: "2026-2027" },
   { img: banner2, title: "EXCELLENCE IN", subtitle: "EDUCATION" },
-
+  { img: banner3, title: "SUCCESSFUL FUTURE", subtitle: "YOUR JOURNEY STARTS HERE" }
 ];
 
 const quickLinks = [
-  { label: "News", color: "bg-[#e91e8c]", to: "/events", icon: <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M20 3H4a1 1 0 00-1 1v14a2 2 0 002 2h14a2 2 0 002-2V4a1 1 0 00-1-1zm-1 15H5V5h14v13zM7 7h10v2H7zm0 4h10v2H7zm0 4h5v2H7z"/></svg> },
+  { label: "News", color: "bg-[#e91e8c]", to: "/news", icon: <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M20 3H4a1 1 0 00-1 1v14a2 2 0 002 2h14a2 2 0 002-2V4a1 1 0 00-1-1zm-1 15H5V5h14v13zM7 7h10v2H7zm0 4h10v2H7zm0 4h5v2H7z"/></svg> },
   { label: "Events", color: "bg-[#1a9dbd]", to: "/events", icon: <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5C3.9 3 3 3.9 3 5v16c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 18H5V9h14v12zm0-14H5V5h14v2zM7 11h2v2H7zm0 4h2v2H7zm4-4h2v2h-2zm0 4h2v2h-2zm4-4h2v2h-2zm0 4h2v2h-2z"/></svg> },
   { label: "Admission", color: "bg-[#26c6da]", to: "/contact", icon: <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 000-1.41l-2.34-2.34a1 1 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg> },
   { label: "Courses", color: "bg-[#4caf50]", to: "/courses", icon: <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zm0 12.91L3.18 10.7 12 6.09l8.82 4.61L12 15.91zM1 17v2h22v-2H1z"/></svg> },
@@ -268,11 +269,12 @@ export default function Home() {
       )}
 
       {/* ── Hero Slider ── */}
-      <div className="relative h-[380px] md:h-[460px] lg:h-[650px] overflow-hidden select-none">
+      <div className="relative h-48 sm:h-64 md:h-[460px] lg:h-[650px] overflow-hidden select-none">
+
         {heroSlides.map((slide, i) => (
           <div key={i} className="absolute inset-0 transition-opacity duration-700"
             style={{ opacity: i === current ? 1 : 0, zIndex: i === current ? 1 : 0 }}>
-            <img src={slide.img} alt={slide.title} className="absolute inset-0 w-full h-full object-cover" />
+            <img src={slide.img} alt={slide.title} className="w-full h-full object-cover" />
             <div className="absolute inset-0"  />
             <div className="absolute inset-0 flex flex-col justify-center px-10 md:px-16 z-10">
               {/* <div className="bg-[#1a2e3b] text-white text-xs font-bold px-3 py-2 inline-block mb-5 w-fit leading-snug" style={{ fontFamily: "Raleway,sans-serif" }}>

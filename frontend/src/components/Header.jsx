@@ -38,6 +38,7 @@ export default function Header() {
     { label: "Results", path: "#", dropdown: "results", links: resultLinks },
     { label: "Facilities", path: "/facilities", dropdown: "facilities", links: facilityLinks },
     { label: "Events", path: "/events" },
+    { label: "News", path: "/news" },
     { label: "Contact Us", path: "/contact" },
   ];
 

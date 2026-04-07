@@ -28,7 +28,7 @@ app.post("/api/contact", async (req, res) => {
 
   const mailOptions = {
     from: `"Brilliant PU College Website" <${process.env.SMTP_USER}>`,
-    to: "support@sunsys.in",
+    to: process.env.RECEIVER_EMAIL,
     subject: subject || `New Enquiry from ${name}`,
     html: `
       <h2>New Contact Form Submission</h2>
