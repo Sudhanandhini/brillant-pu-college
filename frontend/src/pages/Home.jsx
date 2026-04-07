@@ -149,7 +149,7 @@ export default function Home() {
     e.preventDefault();
     setPopupStatus("sending");
     try {
-      const res = await fetch("/api/contact", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/contact`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...popup, subject: "Enquiry from Popup Form" }),
@@ -172,7 +172,7 @@ export default function Home() {
     e.preventDefault();
     setEnquiryStatus("sending");
     try {
-      const res = await fetch("/api/contact", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/contact`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...enquiry, subject: "Quick Enquiry from Home Page" }),
@@ -298,16 +298,16 @@ export default function Home() {
       </div>
 
       {/* Admission Banner */}
-      <div className="bg-[#1a9dbd] text-white text-center py-3">
-        <span className="font-bold text-lg tracking-wide" style={{ fontFamily: "Raleway,sans-serif" }}>For Admission:+91-9448220421</span>
+      <div className="bg-[#1a9dbd] text-white text-center py-3 px-2">
+        <span className="font-bold text-sm sm:text-lg tracking-wide" style={{ fontFamily: "Raleway,sans-serif" }}>For Admission: +91-9448220421</span>
       </div>
 
       {/* Quick Links */}
-      <div className="max-w-5xl mx-auto px-4 py-6 grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="max-w-5xl mx-auto px-4 py-6 grid grid-cols-2 md:grid-cols-4 gap-3">
         {quickLinks.map((q) => (
-          <Link key={q.label} to={q.to} className={`${q.color} text-white flex items-center gap-4 px-6 py-5 hover:opacity-90 transition-opacity`}>
+          <Link key={q.label} to={q.to} className={`${q.color} text-white flex items-center gap-2 sm:gap-4 px-3 sm:px-6 py-4 hover:opacity-90 transition-opacity`}>
             {q.icon}
-            <span className="font-bold text-sm uppercase tracking-wider" style={{ fontFamily: "Raleway,sans-serif" }}>{q.label}</span>
+            <span className="font-bold text-xs sm:text-sm uppercase tracking-wider" style={{ fontFamily: "Raleway,sans-serif" }}>{q.label}</span>
           </Link>
         ))}
       </div>
@@ -315,8 +315,8 @@ export default function Home() {
       {/* Welcome + News */}
       <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="md:col-span-2 flex gap-4">
-            <img src={col} alt="college" className="w-40 h-36 object-cover flex-shrink-0" />
+          <div className="md:col-span-2 flex flex-col sm:flex-row gap-4">
+            <img src={col} alt="college" className="w-full sm:w-40 h-44 sm:h-36 object-cover flex-shrink-0" />
             <div>
               <h2 className="text-lg font-bold uppercase mb-2 text-gray-800" style={{ fontFamily: "Raleway,sans-serif" }}>Welcome To Brilliant PU College</h2>
               <p className="text-gray-600 text-sm leading-relaxed mb-4">
