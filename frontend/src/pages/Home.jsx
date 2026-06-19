@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import banner1 from "../assets/pu-banner1-1.jpg";
 import banner2 from "../assets/pu-banner2-1.jpg";
 import banner3 from "../assets/pu-banner3-1.jpg";
+import popupImg from "../assets/popup.jpg";
 
 import gall1 from "../assets/gall1.jpg";
 import gall2 from "../assets/gall7.jpg";
@@ -137,7 +138,8 @@ export default function Home() {
   const [current, setCurrent] = useState(0);
   const [animating, setAnimating] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(null);
-  const [showFormPopup, setShowFormPopup] = useState(true);
+  const [showImagePopup, setShowImagePopup] = useState(true);
+  const [showFormPopup, setShowFormPopup] = useState(false);
   const [popup, setPopup] = useState({ name: "", email: "", phone: "", message: "" });
   const [popupStatus, setPopupStatus] = useState(null); // null | "sending" | "success" | "error"
   const [enquiry, setEnquiry] = useState({ name: "", email: "", phone: "", message: "" });
@@ -205,6 +207,34 @@ export default function Home() {
 
   return (
     <div>
+      {/* Image Popup */}
+      {showImagePopup && (
+        <div
+          className="fixed inset-0 z-[1000] flex items-center justify-center p-4"
+          style={{ backgroundColor: 'rgba(0,0,0,0.65)' }}
+          onClick={() => setShowImagePopup(false)}
+        >
+          <div className="relative" onClick={(e) => e.stopPropagation()}>
+            <img
+              src={popupImg}
+              alt="Announcement"
+              className="max-w-[90vw] max-h-[85vh] object-contain shadow-2xl"
+            />
+            <button
+              onClick={() => setShowImagePopup(false)}
+              style={{
+                position: 'absolute', top: '-14px', right: '-14px',
+                background: '#1a9dbd', color: '#fff', border: 'none',
+                width: '30px', height: '30px', borderRadius: '50%',
+                cursor: 'pointer', fontSize: '16px', fontWeight: 'bold',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                lineHeight: 1
+              }}
+            >✕</button>
+          </div>
+        </div>
+      )}
+
       {/* Enquiry Form Popup */}
       {showFormPopup && (
         <div

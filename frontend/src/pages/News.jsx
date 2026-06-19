@@ -51,8 +51,18 @@ import gall117 from "../assets/news/101 (17).webp";
 import gall118 from "../assets/news/101 (18).webp";
 import gall119 from "../assets/news/101 (19).webp";
 
+import gall120 from "../assets/new1.jpg";
+import gall121 from "../assets/new2.jpg";
+
+
 // ── Add new items at the TOP of this array — they will appear first on the page ──
 const newsItems = [
+
+ {
+    title: "Result 2025-2026",
+    images: [gall120, gall121],
+  },
+
   {
     title: "Valedictory Function 2025-2026",
     images: [gall100, gall101, gall102, gall103, gall104, gall105, gall106, gall107, gall108, gall109, gall110, gall111, gall112, gall113, gall114, gall115, gall116, gall117, gall118, gall119],

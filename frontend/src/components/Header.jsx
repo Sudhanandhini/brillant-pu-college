@@ -21,6 +21,7 @@ const courseLinks = [
 ];
 
 const resultLinks = [
+  { label: "2025-2026", path: "/results/2025-2026" },
   { label: "2022-2023", path: "/results/2022-2023" },
   { label: "2021-2022", path: "/results/2021-2022" },
 ];

@@ -1,17 +1,22 @@
 import { useParams, Link } from "react-router-dom";
 import pdf1 from "../assets/2.pdf";
 import pdf2 from "../assets/1.pdf";
+import result1 from "../assets/result1.jpg";
+import result2 from "../assets/result2.jpg";
 
-/* Map year → a sample public PDF URL.
-   Replace these URLs with your actual hosted PDF links. */
 const pdfMap = {
   "2022-2023": pdf1,
-  "2021-2022": pdf2  
+  "2021-2022": pdf2,
+};
+
+const imageMap = {
+  "2025-2026": [result1, result2],
 };
 
 export default function ResultPDF() {
   const { year } = useParams();
   const pdfUrl = pdfMap[year];
+  const images = imageMap[year];
 
   return (
     <div className="py-8 px-4">
@@ -28,9 +33,16 @@ export default function ResultPDF() {
           Results — {year}
         </h2>
 
-        {pdfUrl ? (
+        {images ? (
+          <div className="space-y-6">
+            {images.map((src, i) => (
+              <div key={i} className="border border-gray-200 shadow-sm rounded-sm overflow-hidden">
+                <img src={src} alt={`Result ${year} - ${i + 1}`} className="w-full h-auto object-contain" />
+              </div>
+            ))}
+          </div>
+        ) : pdfUrl ? (
           <>
-            {/* PDF Viewer */}
             <div className="border border-gray-200 shadow-sm rounded-sm overflow-hidden mb-4" style={{ height: "80vh" }}>
               <iframe
                 src={pdfUrl}
@@ -40,8 +52,6 @@ export default function ResultPDF() {
                 style={{ border: "none" }}
               />
             </div>
-
-            {/* Download button */}
             <a
               href={pdfUrl}
               download={`Result_${year}.pdf`}
@@ -58,7 +68,7 @@ export default function ResultPDF() {
           </>
         ) : (
           <div className="text-gray-500 text-sm py-10 text-center border border-dashed border-gray-300">
-            No result PDF available for {year}.
+            No result available for {year}.
           </div>
         )}
 
