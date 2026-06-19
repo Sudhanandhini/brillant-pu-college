@@ -138,8 +138,28 @@ export default function Home() {
   const [current, setCurrent] = useState(0);
   const [animating, setAnimating] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(null);
-  const [showImagePopup, setShowImagePopup] = useState(true);
+  const [popupQueue, setPopupQueue] = useState([]); // array of { url, title }
   const [showFormPopup, setShowFormPopup] = useState(false);
+
+  const API_BASE = import.meta.env.VITE_API_URL || "";
+
+  useEffect(() => {
+    fetch("/api/popup")
+      .then((r) => r.json())
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setPopupQueue(data.map((p) => ({ url: `${API_BASE}${p.url}`, title: p.title })));
+        } else {
+          setPopupQueue([{ url: popupImg, title: "" }]);
+        }
+      })
+      .catch(() => {
+        setPopupQueue([{ url: popupImg, title: "" }]);
+      });
+  }, []);
+
+  // Close current popup — show next one if any remain
+  const closeCurrentPopup = () => setPopupQueue((q) => q.slice(1));
   const [popup, setPopup] = useState({ name: "", email: "", phone: "", message: "" });
   const [popupStatus, setPopupStatus] = useState(null); // null | "sending" | "success" | "error"
   const [enquiry, setEnquiry] = useState({ name: "", email: "", phone: "", message: "" });
@@ -207,21 +227,22 @@ export default function Home() {
 
   return (
     <div>
-      {/* Image Popup */}
-      {showImagePopup && (
+      {/* Image Popups — each one is its own separate modal, shown sequentially */}
+      {popupQueue.length > 0 && (
         <div
           className="fixed inset-0 z-[1000] flex items-center justify-center p-4"
           style={{ backgroundColor: 'rgba(0,0,0,0.65)' }}
-          onClick={() => setShowImagePopup(false)}
+          onClick={closeCurrentPopup}
         >
           <div className="relative" onClick={(e) => e.stopPropagation()}>
             <img
-              src={popupImg}
-              alt="Announcement"
+              src={popupQueue[0].url}
+              alt={popupQueue[0].title || "Announcement"}
               className="max-w-[90vw] max-h-[85vh] object-contain shadow-2xl"
             />
+            {/* Close */}
             <button
-              onClick={() => setShowImagePopup(false)}
+              onClick={closeCurrentPopup}
               style={{
                 position: 'absolute', top: '-14px', right: '-14px',
                 background: '#1a9dbd', color: '#fff', border: 'none',
@@ -231,6 +252,16 @@ export default function Home() {
                 lineHeight: 1
               }}
             >✕</button>
+            {/* Remaining count badge */}
+            {popupQueue.length > 1 && (
+              <div style={{
+                position: 'absolute', top: '-28px', left: '0',
+                color: '#fff', fontSize: '12px', fontWeight: '600',
+                background: 'rgba(0,0,0,0.4)', padding: '2px 8px', borderRadius: '10px'
+              }}>
+                {popupQueue.length} more
+              </div>
+            )}
           </div>
         </div>
       )}

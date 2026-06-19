@@ -1,11 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 
-function ScrollToTop() {
-  const { pathname } = useLocation();
-  useEffect(() => { window.scrollTo(0, 0); }, [pathname]);
-  return null;
-}
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
@@ -25,39 +20,57 @@ import Laboratory from "./pages/Laboratory";
 import PrincipalMessage from "./pages/Principalmessage";
 import Management from "./pages/Management";
 import Faculty from "./pages/Faculty";
+import AdminLogin from "./pages/admin/AdminLogin";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => { window.scrollTo(0, 0); }, [pathname]);
+  return null;
+}
+
+function PublicLayout() {
+  return (
+    <div className="min-h-screen flex flex-col">
+      <Header />
+      <main className="flex-1">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/about/principals-message" element={<PrincipalMessage />} />
+          <Route path="/about/management" element={<Management />} />
+          <Route path="/about/faculty" element={<Faculty />} />
+          <Route path="/courses" element={<Courses />} />
+          <Route path="/courses/pcmb" element={<PCMB />} />
+          <Route path="/courses/pcmcs" element={<PCMCs />} />
+          <Route path="/results" element={<Results />} />
+          <Route path="/results/:year" element={<ResultPDF />} />
+          <Route path="/events" element={<Events />} />
+          <Route path="/news" element={<News />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/facilities" element={<FacilitiesLayout />}>
+            <Route index element={<Navigate to="/facilities/library" replace />} />
+            <Route path="library" element={<Library />} />
+            <Route path="laboratory" element={<Laboratory />} />
+            <Route path="transportation" element={<Transportation />} />
+            <Route path="hostel" element={<Hostel />} />
+          </Route>
+        </Routes>
+      </main>
+      <Footer />
+    </div>
+  );
+}
 
 export default function App() {
   return (
     <BrowserRouter>
-      <div className="min-h-screen flex flex-col">
-        <ScrollToTop />
-        <Header />
-        <main className="flex-1">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-              <Route path="/about/principals-message" element={<PrincipalMessage />} />
-            <Route path="/about/management" element={<Management />} />
-            <Route path="/about/faculty" element={<Faculty />} />
-            <Route path="/courses" element={<Courses />} />
-            <Route path="/courses/pcmb" element={<PCMB />} />
-            <Route path="/courses/pcmcs" element={<PCMCs />} />
-            <Route path="/results" element={<Results />} />
-            <Route path="/results/:year" element={<ResultPDF />} />
-            <Route path="/events" element={<Events />} />
-            <Route path="/news" element={<News />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/facilities" element={<FacilitiesLayout />}>
-              <Route index element={<Navigate to="/facilities/library" replace />} /> 
- <Route path="library" element={<Library />} />
-              <Route path="laboratory" element={<Laboratory />} />
-              <Route path="transportation" element={<Transportation />} />
-              <Route path="hostel" element={<Hostel />} />
-            </Route>
-          </Routes>
-        </main>
-        <Footer />
-      </div>
+      <ScrollToTop />
+      <Routes>
+        <Route path="/admin" element={<AdminLogin />} />
+        <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        <Route path="/*" element={<PublicLayout />} />
+      </Routes>
     </BrowserRouter>
   );
 }

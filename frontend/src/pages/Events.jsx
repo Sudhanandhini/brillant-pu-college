@@ -1,4 +1,6 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
+
+const API_BASE = import.meta.env.VITE_API_URL || "";
 
 import img1 from "../assets/event/1/1.png"
 import img2 from "../assets/event/1/2.png"
@@ -291,12 +293,33 @@ function EventRow({ events }) {
 
 /* ── Main Page ── */
 export default function Events() {
+  const [apiEvents, setApiEvents] = useState([]);
+
+  useEffect(() => {
+    fetch("/api/events")
+      .then((r) => r.json())
+      .then((data) => {
+        if (Array.isArray(data)) setApiEvents(data);
+      })
+      .catch(() => {});
+  }, []);
+
+  const dynamicEvents = useMemo(
+    () =>
+      apiEvents.map((item) => ({
+        title: item.title,
+        images: item.images.map((img) => `${API_BASE}${img.url}`),
+      })),
+    [apiEvents]
+  );
+
   return (
     <div className="py-10 px-4">
       <div className="max-w-6xl mx-auto">
         <h2 className="text-2xl font-bold uppercase tracking-wider text-gray-800 mb-8" style={{ fontFamily: "Raleway,sans-serif" }}>
           Events
         </h2>
+        {dynamicEvents.length > 0 && <EventRow events={dynamicEvents} />}
         <EventRow events={eventGroups} />
         <EventRow events={row2Events} />
         <EventRow events={row2Events1} />

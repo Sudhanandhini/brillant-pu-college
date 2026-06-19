@@ -1,4 +1,6 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
+
+const API_BASE = import.meta.env.VITE_API_URL || "";
 
 import gall1 from "../assets/news/1.jpg";
 import gall2 from "../assets/news/2.jpg";
@@ -262,6 +264,24 @@ function ImageSlider({ images, onImageClick }) {
 /* ── Main Page ── */
 export default function News() {
   const [lightbox, setLightbox] = useState(null);
+  const [apiNews, setApiNews] = useState([]);
+
+  useEffect(() => {
+    fetch("/api/news")
+      .then((r) => r.json())
+      .then((data) => {
+        if (Array.isArray(data)) setApiNews(data);
+      })
+      .catch(() => {});
+  }, []);
+
+  const allNews = useMemo(() => {
+    const dynamic = apiNews.map((item) => ({
+      title: item.title,
+      images: item.images.map((img) => `${API_BASE}${img.url}`),
+    }));
+    return [...dynamic, ...newsItems];
+  }, [apiNews]);
 
   return (
     <div className="py-10 px-4">
@@ -282,7 +302,7 @@ export default function News() {
         )}
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {newsItems.map((item, i) => (
+          {allNews.map((item, i) => (
             <div key={i} className="shadow-sm overflow-hidden">
               <ImageSlider
                 images={item.images}
