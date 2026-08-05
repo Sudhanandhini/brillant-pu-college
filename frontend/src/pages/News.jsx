@@ -267,7 +267,7 @@ export default function News() {
   const [apiNews, setApiNews] = useState([]);
 
   useEffect(() => {
-    fetch("/api/news")
+    fetch(`${API_BASE}/api/news`)
       .then((r) => r.json())
       .then((data) => {
         if (Array.isArray(data)) setApiNews(data);

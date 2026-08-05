@@ -32,7 +32,7 @@ function PopupTab({ popups, token, onRefresh }) {
     const form = new FormData();
     form.append("title", title);
     form.append("image", file);
-    const res = await apiPost("/api/admin/popup", form, token);
+    const res = await apiPost(`${API_BASE}/api/admin/popup`, form, token);
     setLoading(false);
     if (res.ok) {
       setMsg({ ok: true, text: "Popup added successfully!" });
@@ -47,7 +47,7 @@ function PopupTab({ popups, token, onRefresh }) {
 
   async function handleDelete(id) {
     if (!confirm("Remove this popup image?")) return;
-    await apiDelete(`/api/admin/popup/${id}`, token);
+    await apiDelete(`${API_BASE}/api/admin/popup/${id}`, token);
     onRefresh();
   }
 
@@ -142,7 +142,7 @@ function ContentTab({ items, type, token, onRefresh }) {
     const form = new FormData();
     form.append("title", title);
     files.forEach((f) => form.append("images", f));
-    const res = await apiPost(`/api/admin/${type}`, form, token);
+    const res = await apiPost(`${API_BASE}/api/admin/${type}`, form, token);
     setLoading(false);
     if (res.ok) {
       setMsg({ ok: true, text: `${label} added successfully!` });
@@ -157,7 +157,7 @@ function ContentTab({ items, type, token, onRefresh }) {
 
   async function handleDelete(id) {
     if (!confirm(`Delete this ${label.toLowerCase()}?`)) return;
-    await apiDelete(`/api/admin/${type}/${id}`, token);
+    await apiDelete(`${API_BASE}/api/admin/${type}/${id}`, token);
     onRefresh();
   }
 
@@ -271,9 +271,9 @@ export default function AdminDashboard() {
     setLoadingData(true);
     try {
       const [p, n, e] = await Promise.all([
-        fetch("/api/popup").then((r) => r.json()),
-        fetch("/api/news").then((r) => r.json()),
-        fetch("/api/events").then((r) => r.json()),
+        fetch(`${API_BASE}/api/popup`).then((r) => r.json()),
+        fetch(`${API_BASE}/api/news`).then((r) => r.json()),
+        fetch(`${API_BASE}/api/events`).then((r) => r.json()),
       ]);
       setPopups(Array.isArray(p) ? p : []);
       setNews(n);

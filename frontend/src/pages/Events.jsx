@@ -296,7 +296,7 @@ export default function Events() {
   const [apiEvents, setApiEvents] = useState([]);
 
   useEffect(() => {
-    fetch("/api/events")
+    fetch(`${API_BASE}/api/events`)
       .then((r) => r.json())
       .then((data) => {
         if (Array.isArray(data)) setApiEvents(data);

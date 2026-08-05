@@ -144,7 +144,7 @@ export default function Home() {
   const API_BASE = import.meta.env.VITE_API_URL || "";
 
   useEffect(() => {
-    fetch("/api/popup")
+    fetch(`${API_BASE}/api/popup`)
       .then((r) => r.json())
       .then((data) => {
         if (Array.isArray(data) && data.length > 0) {
